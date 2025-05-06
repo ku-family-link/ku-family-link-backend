@@ -3,6 +3,7 @@ package com.kufamilylinkbackend.application.scheduler;
 import com.kufamilylinkbackend.application.domain.HealthAnomalyDetector;
 import com.kufamilylinkbackend.application.domain.HealthAnomalyDetector.AnomalyResult;
 import com.kufamilylinkbackend.application.service.FitbitDataFetchService;
+import com.kufamilylinkbackend.data.fitbit.health.StepResponse;
 import com.kufamilylinkbackend.infrastructure.repository.FitbitUserRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,10 +48,12 @@ public class HealthMonitorScheduler {
 
         AnomalyResult result = HealthAnomalyDetector.detect(heart, sleep, step);
 
+        // 이상 징후 알림 처리
         if (result.hasAnyAnomaly()) {
           log.warn("이상 징후 발생: userId={} => {}", userId, result);
           //TODO: GPT 메시지 생성 + 저장 또는 알림 전송 후처리로 이어짐
           // 1. AI 기반 메시지 생성 (임시 mock)
+
           String title = "이상 건강 징후 감지!";
           String content = generateMockMessage(result); // 아래 메서드 참고
 
@@ -74,8 +77,38 @@ public class HealthMonitorScheduler {
                   .build();
 
           alertService.sendAlert(userId, alertMessage);
+
         } else {
           log.info("정상 상태: userId={}", userId);
+        }
+
+        // ✅ 2. 무응답/무활동 감지 (예: 걸음 수가 100보 미만)
+        List<StepResponse.StepData> stepList = step.getActivitiesSteps();
+        if (!stepList.isEmpty()) {
+          StepResponse.StepData stepData = stepList.get(0);
+          int steps = Integer.parseInt(stepData.getValue());
+
+          if (steps < 100) {
+            String emergencyTitle = "비상상황 감지 (무활동)";
+            String emergencyContent = "하루 동안 거의 활동이 없습니다. 사용자 상태를 확인해 주세요!";
+
+            alertLogRepository.save(AlertLog.builder()
+                    .fitbitUserId(userId)
+                    .type(AlertType.INACTIVITY_EMERGENCY)
+                    .title(emergencyTitle)
+                    .content(emergencyContent)
+                    .build());
+
+            alertService.sendAlert(userId, AlertMessage.builder()
+                    .fitbitUserId(userId)
+                    .title(emergencyTitle)
+                    .content(emergencyContent)
+                    .type("INACTIVITY_EMERGENCY")
+                    .createdAt(LocalDateTime.now())
+                    .build());
+
+            log.warn("🚨 무활동 비상상황 발생: userId={} => steps={}", userId, steps);
+          }
         }
 
       } catch (Exception e) {
