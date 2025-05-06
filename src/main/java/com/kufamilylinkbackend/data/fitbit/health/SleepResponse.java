@@ -18,11 +18,13 @@ public class SleepResponse {
     private int efficiency;
     private String startTime;
     private String endTime;
+    private boolean isMainSleep;
   }
 
   @Data
   public static class SleepSummary {
     private int totalMinutesAsleep;
     private int totalSleepRecords;
+    private int totalTimeInBed;
   }
 }

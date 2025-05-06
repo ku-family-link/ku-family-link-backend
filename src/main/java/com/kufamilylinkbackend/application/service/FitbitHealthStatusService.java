@@ -1,6 +1,7 @@
 package com.kufamilylinkbackend.application.service;
 
 import com.kufamilylinkbackend.application.domain.fitbit.FitbitUser;
+import com.kufamilylinkbackend.data.fitbit.health.ActivitySummaryResponse;
 import com.kufamilylinkbackend.data.fitbit.health.HeartRateResponse;
 import com.kufamilylinkbackend.data.fitbit.health.SleepResponse;
 import com.kufamilylinkbackend.data.fitbit.health.StepResponse;
@@ -30,9 +31,15 @@ public class FitbitHealthStatusService {
     String period = "1d";
 
     // Fitbit에서 오늘의 정보를 가져오기
+    ActivitySummaryResponse activitySummaryResponse = fetchService.fetchActivitySummary(accessToken,
+        today);
+    System.out.println(activitySummaryResponse);
     HeartRateResponse heartRate = fetchService.fetchHeartRate(accessToken, date, period);
+    System.out.println(heartRate);
     StepResponse step = fetchService.fetchStepData(accessToken, date, period);
+    System.out.println(step);
     SleepResponse sleep = fetchService.fetchSleepData(accessToken, today);
+    System.out.println(sleep);
 
     //수면시간
     double sleepHours = Optional.ofNullable(sleep)

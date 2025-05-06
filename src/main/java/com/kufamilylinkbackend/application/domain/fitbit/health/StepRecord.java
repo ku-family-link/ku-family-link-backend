@@ -8,7 +8,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class StepRecord {
 
@@ -22,4 +30,8 @@ public class StepRecord {
 
   private LocalDate date;
   private int stepCount;
+
+  public void updateStepCount(int stepCount) {
+    this.stepCount = stepCount;
+  }
 }
