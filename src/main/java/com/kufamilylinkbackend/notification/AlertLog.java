@@ -21,9 +21,11 @@ public class AlertLog {
 
     private String fitbitUserId;   // 알림 대상자
 
-    private String type;           // 예: HEART_RATE, INACTIVITY
+    @Enumerated(EnumType.STRING)
+    private AlertType type;        // 예: HEALTH_ANOMALY, INFO, CRITICAL
+
     private String title;          // 예: 이상 징후 감지
-    private String content;        // 예: 심박수가 130을 초과했습니다.
+    private String content;        // 예: 심박수가 평소보다 높습니다
 
     private LocalDateTime createdAt;
 
