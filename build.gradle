@@ -29,6 +29,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.33'
 
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.0.2'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
