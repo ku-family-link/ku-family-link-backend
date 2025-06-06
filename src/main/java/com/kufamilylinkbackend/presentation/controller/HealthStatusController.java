@@ -53,6 +53,10 @@ public class HealthStatusController {
     fitbitSaveDataService.saveSleep(userId, LocalDate.now());
     fitbitSaveDataService.saveSteps(userId, LocalDate.now());
     fitbitSaveDataService.saveHeartRate(userId, LocalDate.now());
+    fitbitSaveDataService.saveWater(userId, LocalDate.now());
+    fitbitSaveDataService.saveWeight(userId, LocalDate.now());
+    fitbitSaveDataService.saveBodyFat(userId, LocalDate.now());
+
     return ResponseEntity.ok(Map.of("status", "success"));
   }
 
