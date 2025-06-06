@@ -2,6 +2,7 @@ package com.kufamilylinkbackend.infrastructure.mqtt;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class MqttReceiver implements MqttCallback {
 
   private final MqttClient mqttClient;
@@ -27,7 +29,7 @@ public class MqttReceiver implements MqttCallback {
 
   @Override
   public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-    System.out.printf("메세지 도착 : topic: %s / message : %s", s, mqttMessage);
+    log.info("메세지 도착 : topic: {} / message : {}", s, mqttMessage);
 
   }
 
