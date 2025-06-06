@@ -33,8 +33,7 @@ public class PublicDataApiClient {
           .build();
 
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      System.out.println(urlStr);
-      System.out.println("응답 코드: " + response.statusCode());
+
       return response.body();
 
     } catch (Exception e) {
