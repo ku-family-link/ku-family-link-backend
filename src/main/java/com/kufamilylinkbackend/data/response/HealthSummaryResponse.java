@@ -9,8 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HealthSummaryResponse {
   private String date;
-  private int restingHeartRate;
+  private int heartRate;
   private int totalSteps;
   private double sleepHours;
+  private double weight;
+  private double waterIntake;
+  private double bodyFat;
   private String analysis;
 }
