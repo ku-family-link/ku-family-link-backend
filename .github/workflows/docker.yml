@@ -18,9 +18,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Gradle 실행 권한 부여
-        run: chmod +x ./gradlew
-
       - name: Gradle 캐시 설정
         uses: actions/cache@v3
         with:
@@ -32,7 +29,9 @@ jobs:
             ${{ runner.os }}-gradle
 
       - name: Gradle 빌드
-        run: ./gradlew clean build -x test
+        run: | 
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
 
       - name: DockerHub 로그인
         uses: docker/login-action@v3
