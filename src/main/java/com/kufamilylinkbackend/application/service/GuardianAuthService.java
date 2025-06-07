@@ -39,6 +39,7 @@ public class GuardianAuthService {
         .password(encodedPassword)
         .name(request.name())
         .phone(request.phone())
+        .relationship(request.relationship())
         .clientage(fitbitUser)
         .build();
 
