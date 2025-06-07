@@ -1,7 +1,8 @@
 package com.kufamilylinkbackend.data.response;
 
 public record GuardianSignupResponse(
-    Long id
+    Long id,
+    String clientageId
 ) {
 
 }

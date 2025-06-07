@@ -46,7 +46,7 @@ public class GuardianAuthService {
     Guardian save = guardianRepository.save(newGuardian);
 
     // return: 유저 id 반환
-    return new GuardianSignupResponse(save.getId());
+    return new GuardianSignupResponse(save.getId(), fitbitUser.getFitbitUserId());
   }
 
   @Transactional(readOnly = true)
@@ -60,7 +60,7 @@ public class GuardianAuthService {
       throw new ApplicationException(ErrorCode.PASSWORD_MISMATCH_EXCEPTION);
     }
 
-    return new GuardianLoginResponse(findGuardian.getId());
+    return new GuardianLoginResponse(findGuardian.getId(), findGuardian.getClientage().getFitbitUserId());
   }
 
 }
