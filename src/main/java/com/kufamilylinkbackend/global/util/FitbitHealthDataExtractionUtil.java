@@ -1,9 +1,12 @@
 package com.kufamilylinkbackend.global.util;
 
+import com.kufamilylinkbackend.data.fitbit.health.ActivitySummaryResponse;
+import com.kufamilylinkbackend.data.fitbit.health.ActivitySummaryResponse.ActivitySummary;
 import com.kufamilylinkbackend.data.fitbit.health.BodyFatResponse;
 import com.kufamilylinkbackend.data.fitbit.health.BodyFatResponse.BodyFatLog;
 import com.kufamilylinkbackend.data.fitbit.health.HeartRateResponse;
 import com.kufamilylinkbackend.data.fitbit.health.SleepResponse;
+import com.kufamilylinkbackend.data.fitbit.health.SleepResponse.SleepData;
 import com.kufamilylinkbackend.data.fitbit.health.StepResponse;
 import com.kufamilylinkbackend.data.fitbit.health.WaterResponse;
 import com.kufamilylinkbackend.data.fitbit.health.WaterResponse.WaterSummary;
@@ -52,6 +55,43 @@ public class FitbitHealthDataExtractionUtil {
     return Optional.ofNullable(bodyFatResponse.fat())
         .flatMap(list -> list.stream().findFirst())
         .map(BodyFatLog::fat)
+        .orElse(0.0);
+  }
+
+  // 소모 칼로리 (kcal)
+  public static double extractCaloriesOut(ActivitySummaryResponse activitySummary) {
+    return Optional.ofNullable(activitySummary.getSummary())
+        .map(ActivitySummary::getCaloriesOut)
+        .orElse(0);
+  }
+
+  // 앉아있는 시간 (분)
+  public static double extractSedentaryMinutes(ActivitySummaryResponse activitySummary) {
+    return Optional.ofNullable(activitySummary.getSummary())
+        .map(ActivitySummary::getSedentaryMinutes)
+        .orElse(0);
+  }
+
+  // 활동 시간 (분)
+  public static double extractActiveMinutes(ActivitySummaryResponse activitySummary) {
+    return Optional.ofNullable(activitySummary.getSummary())
+        .map(ActivitySummary::getVeryActiveMinutes)
+        .orElse(0);
+  }
+
+  // 수면 효율 (%)
+  public static double extractEfficiency(SleepResponse sleepResponse) {
+    return Optional.ofNullable(sleepResponse.getSleep())
+        .flatMap(list -> list.stream().findFirst())
+        .map(SleepData::getEfficiency)
+        .orElse(0);
+  }
+
+  // BMI
+  public static double extractBmi(WeightResponse weightResponse) {
+    return Optional.ofNullable(weightResponse.weight())
+        .flatMap(list -> list.stream().findFirst())
+        .map(WeightLog::bmi)
         .orElse(0.0);
   }
 }
