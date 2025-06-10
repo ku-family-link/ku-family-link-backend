@@ -48,7 +48,33 @@ public class HealthMonitorScheduler {
 
         AnomalyResult result = HealthAnomalyDetector.detect(heart, sleep, step);
 
-        // 이상 징후 알림 처리
+        // ✅ 1. 심박수 이상 감지 단독 알림
+        if (result.isHighRestingHeartRate()) {
+          String title = "심박수 이상 감지";
+          String content = "심박수가 평소보다 높습니다. 과로 또는 스트레스 상태일 수 있어요.";
+
+          alertLogRepository.save(AlertLog.builder()
+                  .fitbitUserId(userId)
+                  .type(AlertType.HEART_RATE_WARNING)
+                  .title(title)
+                  .content(content)
+                  .createdAt(LocalDateTime.now())
+                  .build());
+
+          alertService.sendAlert(userId, AlertMessage.builder()
+                  .fitbitUserId(userId)
+                  .title(title)
+                  .content(content)
+                  .type("HEART_RATE_WARNING")
+                  .createdAt(LocalDateTime.now())
+                  .build());
+
+          log.warn("⚠️ 심박수 이상 알림 전송: userId={}", userId);
+        }
+
+
+
+        // ✅ 2. 종합 이상 징후 감지 (여러 조건 중 하나라도 이상이면)
         if (result.hasAnyAnomaly()) {
           log.warn("이상 징후 발생: userId={} => {}", userId, result);
           //TODO: GPT 메시지 생성 + 저장 또는 알림 전송 후처리로 이어짐
@@ -82,7 +108,7 @@ public class HealthMonitorScheduler {
           log.info("정상 상태: userId={}", userId);
         }
 
-        // ✅ 2. 무응답/무활동 감지 (예: 걸음 수가 100보 미만)
+        // ✅ 3. 무응답/무활동 감지 (예: 걸음 수가 100보 미만)
         List<StepResponse.StepData> stepList = step.getActivitiesSteps();
         if (!stepList.isEmpty()) {
           StepResponse.StepData stepData = stepList.get(0);

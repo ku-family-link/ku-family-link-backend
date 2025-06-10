@@ -6,6 +6,7 @@ public enum AlertType {
     CRITICAL,       // 심각 경고
     WARNING,         // 경고 수준
     INACTIVITY_EMERGENCY,
+    HEART_RATE_WARNING,
     COMPLETED,  // 미션 완료
     NORMAL      // 이상 징후 없음
 }
