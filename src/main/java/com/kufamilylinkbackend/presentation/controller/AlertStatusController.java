@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/notifications")
+@RequestMapping("/api/v1/notifications")
 public class AlertStatusController {
 
     private final AlertQueryService alertQueryService;
