@@ -41,7 +41,8 @@ public class MqttReceiver implements MqttCallback {
             .fitbitUserId(null)
             .type(AlertType.INFO)
             .title("MQTT 메시지 수신")
-            .content(String.format("topic: %s, message: %s", s, mqttMessage))
+            .content(String.format("비상상황 발생! 피보호자가 위험 신호를 알렸습니다."))
+            .fitbitUserId("CLC3TK")
             .createdAt(LocalDateTime.now())
             .build());
 
