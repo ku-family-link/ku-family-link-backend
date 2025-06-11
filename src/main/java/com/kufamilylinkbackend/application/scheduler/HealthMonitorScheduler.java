@@ -34,7 +34,7 @@ public class HealthMonitorScheduler {
   //TODO: 추후 DB에서 감지중인 userId 리스트를 가져오도록 개선 가능
   private final List<String> testUsers = List.of("CLC3TK");
 
-  @Scheduled(fixedDelay = 300_000) // 5분 간격
+  @Scheduled(fixedDelay = 900_000) // 5분 간격
   public void checkHealth() {
     String accessToken = userRepository.findById(testUsers.get(0))
         .orElseThrow().getAccessToken();
