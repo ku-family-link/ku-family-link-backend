@@ -25,8 +25,8 @@ public class UserInfoController {
   public ResponseEntity<FitbitUserMyPageResponse> getFitbitUserInfo(@PathVariable String userId) {
     FitbitUser fitbitUser = fitbitUserRepository.findById(userId)
         .orElseThrow();
-    Guardian guardian = guardianRepository.findFirstByClientage(fitbitUser)
-        .orElseThrow();
+    Guardian guardian = guardianRepository.findByClientage(fitbitUser)
+        .get(0);
     return ResponseEntity.ok(FitbitUserMyPageResponse.of(fitbitUser, guardian));
   }
 
