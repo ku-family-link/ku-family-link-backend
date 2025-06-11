@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class AlertLogService {
 
     private final AlertLogRepository alertLogRepository;
 
+    @Transactional
     public void saveMissionCompletedAlert(String fitbitUserId) {
         AlertLog log = AlertLog.builder()
                 .fitbitUserId(fitbitUserId)
