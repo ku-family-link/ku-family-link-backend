@@ -27,6 +27,15 @@ public class UserInfoController {
         .orElseThrow();
     Guardian guardian = guardianRepository.findByClientage(fitbitUser)
         .get(0);
+    if(guardian == null) {
+      guardian = Guardian.builder()
+          .phone("-")
+          .email("-")
+          .name("-")
+          .relationship("-")
+          .build();
+    }
+
     return ResponseEntity.ok(FitbitUserMyPageResponse.of(fitbitUser, guardian));
   }
 

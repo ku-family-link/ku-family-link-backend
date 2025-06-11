@@ -62,11 +62,13 @@ public class FitbitSaveDataService {
     // 정보가 있다면 영속성 컨텍스트에 저장
     // 없다면 새로 만들기
     ActivitySummaryRecord record = activitySummaryRepository.findByFitbitUserAndDate(fitbitUser,
-            date)
-        .orElse(ActivitySummaryRecord.builder()
-            .fitbitUser(fitbitUser)
-            .date(date)
-            .build());
+            date).get(0);
+    if (record == null) {
+      record = ActivitySummaryRecord.builder()
+          .fitbitUser(fitbitUser)
+          .date(date)
+          .build();
+    }
 
     // Dto -> Entity
     record.update(summary.getCaloriesOut(),
