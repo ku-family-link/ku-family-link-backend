@@ -16,7 +16,7 @@ import java.util.List;
 public class AlertQueryService {
     private final AlertLogRepository alertLogRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<AlertLogResponse> getAlerts(String fitbitUserId) {
 
         LocalDate today = LocalDate.now();  // 현재 날짜
