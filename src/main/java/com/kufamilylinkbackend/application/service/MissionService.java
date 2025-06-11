@@ -22,7 +22,7 @@ public class MissionService {
 
     private static final int DAILY_STEP_GOAL = 3000;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public MissionResponse getTodayMission(String userId) {
         // 최신 스텝 데이터를 저장 (오늘 기준)
         fitbitSaveDataService.saveSteps(userId, LocalDate.now());
