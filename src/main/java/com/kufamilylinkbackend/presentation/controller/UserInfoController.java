@@ -6,6 +6,7 @@ import com.kufamilylinkbackend.data.response.FitbitUserMyPageResponse;
 import com.kufamilylinkbackend.data.response.GuardianUserMyPageResponse;
 import com.kufamilylinkbackend.infrastructure.repository.FitbitUserRepository;
 import com.kufamilylinkbackend.infrastructure.repository.GuardianRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,18 +26,20 @@ public class UserInfoController {
   public ResponseEntity<FitbitUserMyPageResponse> getFitbitUserInfo(@PathVariable String userId) {
     FitbitUser fitbitUser = fitbitUserRepository.findById(userId)
         .orElseThrow();
-    Guardian guardian = guardianRepository.findByClientage(fitbitUser)
-        .get(0);
-    if(guardian == null) {
-      guardian = Guardian.builder()
+    List<Guardian> guardian = guardianRepository.findByClientage(fitbitUser);
+    Guardian responseGuardian;
+    if(guardian.isEmpty()) {
+      responseGuardian = Guardian.builder()
           .phone("-")
           .email("-")
           .name("-")
           .relationship("-")
           .build();
     }
-
-    return ResponseEntity.ok(FitbitUserMyPageResponse.of(fitbitUser, guardian));
+    else {
+      responseGuardian = guardian.get(0);
+    }
+    return ResponseEntity.ok(FitbitUserMyPageResponse.of(fitbitUser, responseGuardian));
   }
 
   @GetMapping("/{userId}/guardian")
