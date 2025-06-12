@@ -26,6 +26,7 @@ import com.kufamilylinkbackend.infrastructure.repository.StepRecordRepository;
 import com.kufamilylinkbackend.infrastructure.repository.WaterRecordRepository;
 import com.kufamilylinkbackend.infrastructure.repository.WeightRecordRepository;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,13 +62,17 @@ public class FitbitSaveDataService {
     // Activity summary 정보 가져오기
     // 정보가 있다면 영속성 컨텍스트에 저장
     // 없다면 새로 만들기
-    ActivitySummaryRecord record = activitySummaryRepository.findByFitbitUserAndDate(fitbitUser,
-            date).get(0);
-    if (record == null) {
+    List<ActivitySummaryRecord> records = activitySummaryRepository.findByFitbitUserAndDate(fitbitUser,
+            date);
+    ActivitySummaryRecord record;
+    if (records == null) {
       record = ActivitySummaryRecord.builder()
           .fitbitUser(fitbitUser)
           .date(date)
           .build();
+    }
+    else {
+      record = records.get(0);
     }
 
     // Dto -> Entity
